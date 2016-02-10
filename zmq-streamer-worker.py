@@ -5,15 +5,20 @@ import random
 
 def consumer():
 	#connect to same port as backend PUSH
-	port = "5560"
+	work_port = "5560"
+	dest_port = "5561"
+
 	consumer_id = random.randrange(1,10005)
+
 	print "I am consumer #%s" % (consumer_id)
+
 	context = zmq.Context()
+	
 	work_receiver = context.socket(zmq.PULL)
-	work_receiver.connect("tcp://*:%s" %port)
+	work_receiver.connect("tcp://*:%s" % work_port)
 
   	work_destination = context.socket(zmq.PUSH)
-    work_destination.connect("tcp://127.0.0.1:5561")
+    work_destination.connect("tcp://*:%s" % dest_port)
 	
 	while True:
 		work = work_receiver.recv_json()

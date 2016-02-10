@@ -11,6 +11,7 @@ def main():
 		be = context.socket(zmq.PUSH)
 		be.bind("tcp://*:5560")
 
+		#create streamer device with fe & be
 		zmq.devices(zmq.STREAMER, fe, be)
 
 	except Exception e:
