@@ -3,7 +3,8 @@ import zmq
 # Producer PUSH--> frontend PULL - STREAMER - backend PUSH to Worker -> PULL to worker -> WORKER -> PUSH to results collector
 def main():
 	try:
-		context = zmq.Context()
+		print "Streaming device awaiting work..."
+		context = zmq.Context(1)
 
 		fe = context.socket(zmq.PULL)
 		fe.bind("tcp://*:5559")
@@ -12,9 +13,9 @@ def main():
 		be.bind("tcp://*:5560")
 
 		#create streamer device with fe & be
-		zmq.devices(zmq.STREAMER, fe, be)
+		zmq.device(zmq.STREAMER, fe, be)
 
-	except Exception e:
+	except Exception, e:
 		print e
 		print "Destroying zmq Streamer Now"
 	finally:
